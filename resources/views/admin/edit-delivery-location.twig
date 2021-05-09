@@ -1,0 +1,46 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Edit Location{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+         <div class="admin-sect padding-100px">
+           <div class="delivery-place-sect">
+                 <h3 class="mb-4 text-center">Edit Delivery Location</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                             <form action="{{ url_for('edit-delivery-location', {"location": location.id}) }}" method="POST" class="submit-form">
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <input type="text" class="form-control" placeholder="Enter Location" name="location" value="{{ old.location ?? location.location }}" required>
+                                    {% if errors.location %}
+                                        <small class="error">{{ errors.location | first }}</small>
+                                    {% endif %}
+                                </div>
+                                 <div class="form-group">
+                                    <label>LGA under the location</label>
+                                    <input type="text" class="form-control" placeholder="Enter LGAs" name="lga" value="{{ old.lga ?? location.lga }}" required>
+                                    {% if errors.lga %}
+                                        <small class="error">{{ errors.lga | first }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Amount" name="amount" value="{{ old.amount ?? location.amount }}" required>
+                                    {% if errors.amount %}
+                                        <small class="error">{{ errors.amount | first }}</small>
+                                    {% endif %}
+                                </div>
+                                <input type="hidden" name="_METHOD" value="PUT">
+                                {{ csrf | raw }}
+                                <button type="submit" class="btn btn-main btn-block">Update Delivery Location</button>
+                              </form>
+                        </div>
+                    </div>
+                </div>
+           </div>
+         </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Chrystacripsy Kitchen Lagos | Food delivery | Order food online{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.twig" %}
+    
+    <div class="main-content">
+        <div class="jumbotron px-0">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-5">
+                         <div class="">
+                            <h2 class="ft-lg"><strong>Are You Ready to order?</strong></h2>
+                            <p style="font-size:1.1rem;">Explore and Enjoy delicious tasty meals when you order on Chrystacripsy Kitchen and have it delivered to your location.</p>
+                        </diV>
+                        {#<div class="top-specials mt-4">#}
+                        {#     <h5 class="text-center">Top Specials</h5>#}
+                        {#     <ul class="list-unstyled d-flex align-items-center flex-wrap justify-content-center">#}
+                        {#        <li>#}
+                        {#            <a href="/" class="badge badge-secondary badge-pill"  data-toggle="modal" data-target="#ModalCenter">Egusi & Semo</a>#}
+                        {#        </li>#}
+                        {#        <li>#}
+                        {#            <a href="/" class="badge badge-secondary badge-pill"  data-toggle="modal" data-target="#ModalCenter">Fried Rice & Chicken</a>#}
+                        {#        </li>#}
+                        {#        <li>#}
+                        {#            <a href="/" class="badge badge-secondary badge-pill"  data-toggle="modal" data-target="#ModalCenter">Oha & Wheat</a>#}
+                        {#        </li>#}
+                        {#        <li>#}
+                        {#            <a href="/" class="badge badge-secondary badge-pill"  data-toggle="modal" data-target="#ModalCenter">Indomie & Chicken</a>#}
+                        {#        </li>#}
+                        {#        <li>#}
+                        {#            <a href="/" class="badge badge-secondary badge-pill"  data-toggle="modal" data-target="#ModalCenter">Indomie & Plantain</a>#}
+                        {#        </li>#}
+                        {#    </ul>#}
+                        {#</div>#}
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="text-center">
+                            <img src="images/food-intro.png" class="img-fluid" width="80%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="featured-sect foods-sect padding-50px">
+            <div class="text-center">
+                {% if flash.hasMessage('user-account-delete-success') %}
+                    <h4 class="text-uppercase success">{{ flash.getMessage('user-account-delete-success') | first }}</h4>
+                    <h4 class="text-uppercase success">Thank you for patronizing us</h4>
+                {% endif %}
+            </div>
+            <h2 class="text-center mb-3">Featured Food List</h2>
+            <div class="container-fluid">
+                <div class="row" id="menu-list">
+                    {% if menus is empty %}
+                        <h4 class="text-uppercase text-center" style="width: 100%">no food items at the moment</h4>
+                    {% else %}
+                        {% for menu in menus %}
+                            <div class="col-lg-2 col-6 mb-4" id="card-container-{{ menu.id }}" data-quantityleft="{{menu.quantity}}">
+                                <a href="" data-toggle="modal" data-target="#ModalCenter{{ menu.id }}">
+                                    <div class="card border-0 product-card">
+                                        <div class="product-image-box">
+                                            {% if menu.quantity <= 0 %}
+                                                <span class="badge badge-danger food-added">OUT OF STOCK</span>
+                                            {% endif %}
+                                            <img src="/images/menus/{{ menu.id }}.{{ menu.image_extension }}" class="card-img-top product-image" alt="{{ menu.name }}">
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- <a href="#" data-toggle="modal" data-target="#ModalCenter{{ menu.id }}">
+                                                <div class="add-cart">
+                                                    
+                                                </div>
+                                            </a> -->
+                                            <h5 class="card-title ft-sm text-dark"><strong>{{ menu.name | ucwords }}</strong></h5>
+                                            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                                                <div class="food-price text-dark">&#8358; {{ menu.price }}</div>
+                                                <!-- <div class="d-none d-lg-block d-xl-block">
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                </div> -->
+                                                <span class="badge badge-info text-uppercase">{{ menu.category.name }}</span>
+                                            </div>
+                                            {% if menu.quantity > 0 %}
+                                                <!--<button class="btn btn-sm btn-block btn-dark text-uppercase">
+                                                    <i class="fa fa-plus-circle"></i> Add
+                                                </button>-->
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% block popup %}
+                                {% include "includes/pop-up.twig" %}
+                            {% endblock %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% if menus is not empty %}
+                    <p class="text-center"><a href="{{ url_for('food-list') }}" class="btn btn-outline-dark rounded-pill py-2">See all types of food →</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Edit Menu{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+           <div class="admin-add-menu">
+               <div class="container">
+                   <div class="row">
+                        <div class="col-lg-8 mx-auto">                     
+                            {% if flash.hasMessage('menu-create-success') %}
+                                <div class="alert alert-success mb-3" role="alert">
+                                    <i class="fa fa-check-circle"></i> You have successfully added a product to your menu list <a href="{{ url_for('menu-list') }}">View Product List</a>
+                                </div>
+                            {% endif %}
+                            <h2>Edit Menu Item</h2>
+                            <p>Make changes to menu item.</p>
+                        </div>
+                       <div class="col-lg-8 mx-auto">
+                           <div class="card add-product-card">
+                               <div class="card-body add-product-card-body">
+                                   <form action="{{ url_for('alter-menu', { "menu": menu.id }) }}" method="POST" enctype="multipart/form-data" class="submit-form">
+                                       <div class="form-group">
+                                           <label>Name</label>
+                                           <input type="text" name="name" value="{{ old.name ?? menu.name }}" class="form-control form-control-lg" required/>
+                                            {% if errors.name %}
+                                                <small class="error">{{ errors.name | first }}</small>
+                                            {% endif %}
+                                       </div>
+                                       <div class="form-row">
+                                           <div class="col-lg-6 form-group">
+                                               <label>Quantity</label>
+                                               <input type="number" name="quantity" value="{{ old.quantity ?? menu.quantity }}" min="0" class="form-control form-control-lg" required/>
+                                                {% if errors.quantity %}
+                                                    <small class="error">{{ errors.quantity | first }}</small>
+                                                {% endif %}
+                                           </div>
+                                           <div class="col-lg-6 form-group">
+                                               <label>Price<span class="text-muted"> (&#8358;)</span></label>
+                                               <input type="number" name="price" value="{{ old.price ?? int_price(menu.price) }}" min="0" class="form-control form-control-lg" required/>
+                                                {% if errors.price %}
+                                                    <small class="error">{{ errors.price | first }}</small>
+                                                {% endif %}
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label>Choose a Category</label>
+                                           <select class='form-control form-control-lg' name="category" required>
+                                               <option hidden disabled selected>Choose a category</option>
+                                               {% for category in categories %}
+                                                   <option value="{{ category.id }}" {{ menu.category_id is same as(category.id) ? 'selected' : '' }}>{{ category.name | ucwords }}</option>
+                                               {% endfor %}
+                                           </select>
+                                            {% if errors.category %}
+                                                <small class="error">{{ errors.category | first }}</small>
+                                            {% endif %}
+                                       </div>
+                                       <div class="form-group">
+                                           <label>Description</label>
+                                           <textarea class='form-control form-control-lg' rows="5" name="description" required>{{ old.description ?? menu.description }}</textarea>
+                                            {% if errors.description %}
+                                                <small class="error">{{ errors.description | first }}</small>
+                                            {% endif %}
+                                       </div>
+                                       <div class="form-group">
+                                           <label>Product Image</label>
+                                           <input type="file" name="image" class="form-control form-control-lg" />
+                                            {% if errors.image %}
+                                                <small class="error">{{ errors.image }}</small>
+                                            {% endif %}
+                                       </div>
+                                       <hr/>
+                                       <input type="hidden" name="_METHOD" value="PUT">
+                                       {{ csrf | raw }}
+                                       <div class="form-group">
+                                           <button type="submit" class="btn btn-main btn-block">Edit Product</div>
+                                       </div>
+                                   </form>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+   </div>
+{% endblock %}

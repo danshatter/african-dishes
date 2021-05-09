@@ -1,0 +1,76 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Order Complete{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.twig" %}
+    <div class="main-content">
+        <div class="cart-sect mb-5">
+            <div class="container">
+                <h3 class="mb-4 text-center text-uppercase success">your order was placed successfully and is being processed</h3>
+                <h1 class="mb-4">Your Order Summary</h1>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Shopping cart table -->
+                        <div class="table-responsive table-hover table-striped">
+                            <p>Name: {{ order.customer_name | ucwords }}</p>
+                            <p>Email: {{ order.email }}</p>
+                            <p>Phone: {{ order.phone }}</p>
+                            <p>Address 1: {{ order.address_1 | ucwords }}</p>
+                            <p>Address 2: {{ (order.address_2 ?? 'none') | ucwords }}</p>
+                            {% if data is not empty %}
+                                <p>Payment ID: {{ data.data.id }}</p>
+                                <p>Payment Reference: {{ data.data.reference }}</p>
+                            {% endif %}
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                    <th scope="col" class="border-0">
+                                        <div class="p-2 px-3 text-uppercase">Product</div>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        <div class="py-2 text-uppercase">Quantity</div>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        <div class="py-2 text-uppercase">Price</div>
+                                    </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for key, menu in menus %}
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="p-2">
+                                                <img src="/images/menus/{{ menu.id }}.{{ menu.image_extension }}" alt="{{ menu.name }}" class="img-fluid rounded shadow-sm object-fit">
+                                                <div class="cart-title-product d-inline-block align-middle">
+                                                    <h5 class="mb-0"><a href="#" class="text-dark d-inline-block">{{ menu.name | ucwords }}</a></h5>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="align-middle"><strong>{{ quantityId['id' ~ menu.id] }}</strong></td>
+                                        <td class="align-middle"><strong>&#8358; {{ number_format(totals.item_total['id' ~ menu.id], 2) }}</strong></td>
+                                    </tr>
+                                {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                         </div>
+                         <!-- End -->
+                         <div class="cart-calculate">
+                            <div class="row">
+                             <div class="col-lg-6 ml-auto">
+                                 <ul class="list-unstyled mb-4">
+                                     <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Delivery Fee </strong><strong>&#8358; {{ number_format(order.delivery_fee, 2) }}</strong></li>
+                                     <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                                        <h5 class="font-weight-bold">&#8358; {{ number_format(mainTotal, 2) }}</h5>
+                                     </li>
+                                 </ul><a href="{{ url_for('home') }}" class="btn btn-main rounded-pill py-2 btn-block">go to home page</a>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+{% endblock %}

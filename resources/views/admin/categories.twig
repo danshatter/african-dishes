@@ -1,0 +1,70 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Add Category{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+           <div class="admin-add-menu">
+               <div class="container">
+                    <h2>Add Category</h2>
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form action="{{ url_for('add-category') }}" method="POST" class="submit-form">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input type="text" name="name" value="{{ old.name }}" class="form-control form-control-lg" required/>
+                                            {% if errors.name %}
+                                                <small class="error">{{ errors.name | first }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control form-control-lg" name="description" rows="5" required>{{ old.description }}</textarea>
+                                            {% if errors.description %}
+                                                <small class="error">{{ errors.description | first }}</small>
+                                            {% endif %}
+                                        </div>
+                                        {{ csrf | raw }}
+                                        <div class="form-group">
+                                            <button class="btn btn-main btn-block" type="submit">Add Category</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-lg-6 mb-3">
+                            <div class="card">    
+                                <div class="card-body">
+                                    {% if categories is empty %}
+                                        <h4 class="text-center text-uppercase">no categories created</h4>
+                                    {% else %}
+                                        {% for category in categories %}
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h5 class="mt-0">{{ category.name | ucfirst }}</h5>
+                                                    <p>{{ category.description }}</p>
+                                                    <p>Number of Products: {{ category.menus.count() }}</p>
+                                                    <a href="{{ url_for('edit-category', {"category" : category.id }) }}" class="btn btn-info">Edit</a>
+                                                    <form action="{{ url_for('alter-category', {"category" : category.id }) }}" method="POST" class="btn lone-form">
+                                                        <input type="hidden" name="_METHOD" value="DELETE">
+                                                        {{ csrf | raw }}
+                                                        <button type="submit" class="btn btn-secondary">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                        {% endfor %}
+                                    {% endif %}   
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+   </div>
+{% endblock %}

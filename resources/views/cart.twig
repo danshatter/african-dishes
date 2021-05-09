@@ -1,0 +1,30 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.twig" %}
+    <div class="main-content">
+        <div class="cart-sect mb-5">
+            <div class="container">
+                <h1 class="mb-4">Your Cart</h1>
+                
+                <!-- Cart errors that occur during validation -->
+                {% if errors is not empty %}
+                    {% for error in errors %}
+                        <h6 class="error">{{ error }}</h6>
+                    {% endfor %}
+                {% endif %}
+                <!-- End of Cart errors that occur during validation -->
+
+                <div class="row">
+                    <!-- Cart Items will be shown here -->
+                    <div class="col-lg-12" id="cart-list"></div>
+
+                    <!-- All modals will be shown populated here -->
+                    <div id="modal-house"></div>
+                </div>
+            </div>
+        </div>
+     </div>
+{% endblock %}

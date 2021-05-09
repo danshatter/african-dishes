@@ -1,0 +1,148 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Welcome Admin{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+            <div class="admin-app">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2>Welcome, Admin {{ user.first_name | ucwords}}</h2>
+                            {% if flash.hasMessage('add-category-success') %}
+                                <h6 class="success text-uppercase">{{ flash.getMessage('add-category-success') | first }}</h6>
+                            {% endif %}
+
+                            {% if flash.hasMessage('delete-menu-success') %}
+                                <h6 class="success text-uppercase">{{ flash.getMessage('delete-menu-success') | first }}</h6>
+                            {% endif %}
+
+                            {% if flash.hasMessage('update-category-success') %}
+                                <h6 class="success text-uppercase">{{ flash.getMessage('update-category-success') | first }}</h6>
+                            {% endif %}
+
+                            {% if flash.hasMessage('menu-update-success') %}
+                                <h6 class="success text-uppercase">{{ flash.getMessage('menu-update-success') | first }}</h6>
+                            {% endif %}
+
+                            {% if flash.hasMessage('delete-category-success') %}
+                                <h6 class="success text-uppercase">{{ flash.getMessage('delete-category-success') | first }}</h6>
+                            {% endif %}
+                            <p>Find your system analytics below.</p>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-1">Received</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">{{ number_format(ordersTotal) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Order Received
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">{{ monthOrders }} order{{ monthOrders is same as(1) ? '' : 's' }} received this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-2">Delivered</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">{{ number_format(ordersDelivered) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Order Delivered
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">{{ monthDelivered }} order{{ monthDelivered is same as(1) ? '' : 's' }} delivered this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-3">Earnings</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">&#8358; {{ number_format(earningsTotal) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Order Earnings
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">&#8358; {{ number_format(monthEarnings) }} earned this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-4">Categories</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">{{ number_format(categoriesTotal) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Categories
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">{{ monthCategories }} categor{{ monthCategories is same as(1) ? 'y' : 'ies' }} added this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-5">Menu List</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">{{ number_format(menusTotal) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Menu List
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">{{ monthMenus }} menu item{{ monthMenus is same as(1) ? '' : 's' }} added this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                           <div class="card admin-app-card">
+                               <div class="card-body admin-app-card-body">
+                                    <div class="tile-title">
+                                        <h5 class="ml-2 icon-text-6">Users</h5>
+                                    </div>
+                                   <div class="insight_item my-3">
+                                       <div class="insight_value">
+                                           <span class="title font-bold title_lg">{{ number_format(usersTotal) }}</span>
+                                       </div>
+                                       <div class="insight_title font-sm caps_upper">
+                                           Total Registered Users
+                                       </div>
+                                   </div>
+                                   <span class="percent-count">{{ monthUsers }} user{{ monthUsers is same as(1) ? '' : 's' }} registered this {{ monthName }}</span>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+{% endblock %}

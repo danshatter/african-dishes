@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSB7RVDGZV"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-MSB7RVDGZV');
+        </script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Chrystacripsy Kitchen is an online food ordering service based in Lagos, Nigeria. We are available to serve you delicious meals and we deliver to your doorstep."/>
+        <meta name="keywords" content="food website in lagos, food delivery service in lagos, order food online"/>
+        <link rel="icon" href="/images/favicon.png" sizes="32x32">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="/css/europa-font.css" />
+        <link rel="stylesheet" href="/css/style.css">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <!-- GetButton.io widget -->
+    <script type="text/javascript">
+        (function () {
+            var options = {
+                whatsapp: "+2349091836457", // WhatsApp number
+                call_to_action: "Chat with us", // Call to action
+                position: "right", // Position may be 'right' or 'left'
+                pre_filled_message: "Hi, i want to make an enquiry", // WhatsApp pre-filled message
+            };
+            var proto = document.location.protocol, host = "getbutton.io", url = proto + "//static." + host;
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+            s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+            var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+        })();
+    </script>
+    <!-- /GetButton.io widget -->
+    <body>
+        {% block content %}{% endblock %}
+        
+        <footer class="main-footer">
+            <div class="footer-sect">
+                <p class="text-center"><small>&copy; 2020. Chrystacripsy Kitchen Services. All Right Reserved</small></p>
+            </div>
+        </footer>
+        
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        {% block chart %}{% endblock %}
+        <script src="/js/app.js"></script>
+    </body>
+</html>

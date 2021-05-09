@@ -1,0 +1,63 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="main-content">
+        <div class="auth-sect">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 mx-auto">
+                        <div class="sign-auth">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                     <p class="text-center"><img src="/images/logo.png" class="img-fluid" width="300" /></p>
+                                    <hr/>
+                                    {% if flash.hasMessage('not-logged-in') %}
+                                        <h6 class="error text-center text-uppercase">{{ flash.getMessage('not-logged-in') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('reset-password-success') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('reset-password-success') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('register-success') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('register-success') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('login-failed') %}
+                                        <h6 class="error text-center text-uppercase">{{ flash.getMessage('login-failed') | first }}</h6>
+                                    {% endif %}
+                                    <form action="{{ url_for('sign-in') }}" method="POST" class="submit-form">
+                                        <div class="form-group">
+                                            <label>Username/Email</label>
+                                            <input type="text" class="form-control form-control-lg" placeholder="Username or Email" name="email_or_username" value="{{ old.email_or_username }}" required/>
+                                            {% if errors.email_or_username %}
+                                                <small class="error">{{ errors.email_or_username | first }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" required/>
+                                            {% if errors.password %}
+                                                <small class="error">{{ errors.password | first }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-main btn-block btn-lg" type="submit">Log In</button>
+                                        </div>
+
+                                        {{ csrf | raw }}
+                                    </form>
+                                    <p class="text-center"><small class="text-muted">Do not have an account? <a href="{{ url_for('sign-up') }}">Create an account</a></small></p>
+                                    <p class="text-center"><small class="text-muted"><a href="{{ url_for('forgotten-password') }}">Forgotten Password?</a></small></p>
+                                    <p class="text-center"><small class="text-muted"><a href="{{ url_for('home') }}">Back to Home</a></small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

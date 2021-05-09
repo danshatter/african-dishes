@@ -1,0 +1,102 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+           <div class="admin-report">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-lg-12">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Area chart</div>
+                       <div class="card-body">
+                               <canvas id="AreaChart" height="110"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-lg-12">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Line chart</div>
+                       <div class="card-body">
+                               <canvas id="lineChart" height="110"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                   </div><!--End Row-->
+
+                   <div class="row">
+                       <div class="col-lg-12">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Bar Chart</div>
+                           <div class="card-body">
+                           <canvas id="barChart" height="110"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-lg-12">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Horizontal Bar Chart</div>
+                           <div class="card-body">
+                           <canvas id="HorizontalbarChart" height="110"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-lg-12">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Stacked Bar Chart</div>
+                           <div class="card-body">
+                           <canvas id="StackedbarChart" height="110"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                   </div><!--End Row-->
+
+                   <div class="row">
+                       <div class="col-lg-6">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Radar chart</div>
+                           <div class="card-body">
+                           <canvas id="radarChart" height="150"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-lg-6">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Polar Chart</div>
+                           <div class="card-body">
+                           <canvas id="polarChart" height="150"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                   </div><!--End Row-->
+
+                   <div class="row">
+                       <div class="col-lg-6">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Pie Chart</div>
+                           <div class="card-body">
+                           <canvas id="pieChart" height="150"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-lg-6">
+                       <div class="card">
+                           <div class="card-header text-uppercase">Doughnut Chart</div>
+                           <div class="card-body">
+                           <canvas id="doughnutChart" height="150"></canvas>
+                           </div>
+                       </div>
+                       </div>
+                   </div><!--End Row-->
+               </div>
+           </div>
+        </div>
+   </div>
+{% endblock %}
+
+{% block chart %}
+   <script src="/js/Chart.js/Chart.min.js"></script>
+{% endblock %}

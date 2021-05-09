@@ -1,0 +1,77 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Food List{% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.twig" %}
+    <div class="main-content">
+        <div class="foods-sect">
+            <div class="jumbotron">
+                <div class="container-fluid">
+                    <h2>Food List</h2>
+                    <p>Amazing foods and party deals this {{ monthName }}</p>
+                </div>
+            </div>
+           <div class="container-fluid">
+                 <div class="locate mb-4">
+                     <!-- <h4 class="text-muted">Delivery Location: Ago Palace, Lagos</h4> -->
+                     <div class="dropdown">
+                        <select name="category" id="category-dropdown" class="btn btn-secondary dropdown-toggle">
+                            <option value="" disabled selected>Filter Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name | ucwords }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                 </div>
+                <div class="row" id="menu-list">
+                    {% if menus is empty %}
+                        <h4 class="text-uppercase text-center">we currently have no food in our menu list. please check again later.</h4>
+                    {% else %}
+                        {% for menu in menus %}
+                            <div class="col-lg-2 col-6 mb-4" id="card-container-{{ menu.id }}" data-quantityleft="{{menu.quantity}}">
+                                <a href="" data-toggle="modal" data-target="#ModalCenter{{ menu.id }}">
+                                    <div class="card border-0 product-card">
+                                        <div class="product-image-box">
+                                            {% if menu.quantity <= 0 %}
+                                                <span class="badge badge-danger food-added">OUT OF STOCK</span>
+                                            {% endif %}
+                                            <img src="/images/menus/{{ menu.id }}.{{ menu.image_extension }}" class="card-img-top product-image" alt="{{ menu.name }}">
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- <a href="#" data-toggle="modal" data-target="#ModalCenter{{ menu.id }}">
+                                                <div class="add-cart">
+                                                    
+                                                </div>
+                                            </a> -->
+                                            <h5 class="card-title flex-grow-1 ft-sm text-dark"><strong>{{ menu.name | ucwords }}</strong></h5>
+                                            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                                                <div class="food-price text-dark">&#8358; {{ menu.price }}</div>
+                                                <!-- <div class="d-none d-lg-block d-xl-block">
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                    <i class="fa fa-star text-info"></i>
+                                                </div> -->
+                                                <span class="badge badge-info text-uppercase">{{ menu.category.name }}</span>
+                                            </div>
+                                            {% if menu.quantity > 0 %}
+                                                {#<button class="btn btn-sm btn-block btn-dark text-uppercase">#}
+                                                {#    <i class="fa fa-plus-circle"></i> Add#}
+                                                {#</button>#}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% block popup %}
+                                {% include "includes/pop-up.twig" %}
+                            {% endblock %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+           </div>
+        </div>
+    </div>
+{% endblock %}

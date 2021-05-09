@@ -1,0 +1,81 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+           <div class="admin-menu-list">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-lg-12">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div>
+                                    <h2>Orders</h2>
+                                    {% if flash.hasMessage('order-disapproved') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('order-disapproved') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('order-confirmed') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('order-confirmed') | first }}</h6>
+                                    {% endif %}
+                                    <p>List of Orders</p>
+                                </div>
+                                <!-- <a href="#" class="btn btn-main btn-sm"><i class="fa fa-plus"></i> Add a New Food</a> -->
+                            </div>
+                            <div class="card card-table">
+                                <div class="card-body card-body-table">
+                                    {% if orders is empty %}
+                                        <h4 class="text-center text-uppercase">We currently have no orders</h4> 
+                                    {% else %}
+                                    <div class="table-responsive">
+                                        <table class="table no-white-space table-striped table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Order Time</th>
+                                                    <th scope="col">Customer Name</th>
+                                                    <th scope="col">Amount Paid</th>
+                                                    <th scope="col">Order</th>
+                                                    <th scope="col">Delivery Location</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for key, order in orders %}
+                                                    <tr>
+                                                        <td scope="row">{{ key + 1 }}</td>
+                                                        <td>{{ diff_for_humans(order.created_at) }}</td>
+                                                        <td>{{ order.customer_name | ucwords }}</td>
+                                                        <td>&#8358; {{ order.amount }} + &#8358; {{ number_format(order.delivery_fee) }}
+                                                            <br/>
+                                                            <span class="badge badge-{{ order.status.class }}">{{ order.status.status | ucwords }}</span>
+                                                        </td>
+                                                        <td>
+                                                            {% for id, quantity in order.item.cart %}
+                                                                <div>Name: {{ (menus[id].name ?? 'Item Deleted') | ucwords }}</div>
+                                                                <small class="badge badge-secondary badge-pill">Quantity: {{ quantity }}</small>
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>{{ order.delivery_location | ucwords }} Region</td>
+                                                        <td>{{ order.status.status | ucwords }}</td>
+                                                        <td>
+                                                            <a href="{{ url_for('view-order', { "order": order.id }) }}" class="btn btn-warning btn-sm"><i class="fa fa-check"></i> View Order</a>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+   </div>
+{% endblock %}

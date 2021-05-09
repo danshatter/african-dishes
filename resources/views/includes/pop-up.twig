@@ -1,0 +1,58 @@
+<!-- Modal -->
+<div class="modal fade" id="ModalCenter{{ menu.id }}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true" data-quantityleft="{{ menu.quantity }}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content profile-pop-up">
+            <div class="modal-header">
+                <div class="profile-summary">
+                    <h5>{{ menu.name | ucwords }}</h5>
+                </div>
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true text-dark">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-box mb-3">
+                    <img src="/images/menus/{{ menu.id }}.{{ menu.image_extension }}" class="img-fluid img-explorer-popup">
+                </div>
+                <div class="product-spec">
+                    <div class="p-stat">
+                        <p>Price(&#8358;)</p>
+                        <span>&#8358; {{ menu.price }}</span>
+                    </div>
+                    <div class="p-stat">
+                        <p>Liters</p>
+                        <span>2.0</span>
+                    </div>
+                    <div class="p-stat">
+                        <p>Type</p>
+                        <span>{{ menu.category.name | ucwords }}</span>
+                    </div>
+                    <div class="p-stat">
+                        <p>Deliverable</p>
+                        <span>Yes</span>
+                    </div>
+                </div>
+                <p>{{ menu.description | ucfirst }}</p>
+                <form class="add-to-cart-form" data-id="{{ menu.id }}">
+                    {% if menu.quantity > 0 %}
+                        <div class="quantity-count">
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-6 col-form-label">Quantity</label>
+                                <div class="col-6">
+                                    <input type="number" class="form-control quantity-input" value="1" min="1" max="{{ menu.quantity }}" id="quantity-input-{{ menu.id }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <p class="text-center mt-3">
+                        <div class="row">
+                            <div class="col-lg-12 mb-3">
+                                <button class="btn btn-main btn-block cart-btn" id="cart-btn-{{ menu.id }}"{{ menu.quantity > 0 ? '' : ' disabled' }}>{{ menu.quantity > 0 ? 'ADD TO CART' : 'OUT OF STOCK' }}</button>
+                            </div>
+                        </div>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

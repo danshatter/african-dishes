@@ -1,0 +1,111 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    {% include "includes/admin-navbar.twig" %}
+    <div class="main-content">
+        <div class="admin-sect padding-100px">
+           <div class="admin-menu-list">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-lg-12">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div>
+                                   <h2>Users</h2>
+                                    {% if flash.hasMessage('activate-success') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('activate-success') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('deactivate-success') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('deactivate-success') | first }}</h6>
+                                    {% endif %}
+
+                                    {% if flash.hasMessage('block-success') %}
+                                        <h6 class="success text-center text-uppercase">{{ flash.getMessage('block-success') | first }}</h6>
+                                    {% endif %}
+                                   <p>List of Users</p>
+                                </div>
+                                <!-- <a href="<?php echo ROOT_DIR; ?>add-menu.php" class="btn btn-main btn-sm"><i class="fa fa-plus"></i> Add a New Food</a> -->
+                            </div>
+                            <div class="card card-table">
+                                <div class="card-body card-body-table">
+                                    {% if users is empty %}
+                                        <h4 class="text-center text-uppercase">We currently have no users</h4>
+                                    {% else %}
+                                        <div class="table-responsive">
+                                            <table class="table no-white-space table-striped table-hover">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Profile</th>
+                                                        <th scope="col">First Name</th>
+                                                        <th scope="col">Last Name</th>
+                                                        <th scope="col">Email Address</th>
+                                                        <th scope="col">Phone Number</th>
+                                                        <th scope="col">Address 1</th>
+                                                        <th scope="col">Address 2</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for key, customer in users %}
+                                                        <tr>
+                                                            <th scope="row">{{ key + 1 }}</th>
+                                                            <td>
+                                                                <div class="thumb-product">
+                                                                    <img src="/images/profile/{{ customer.image ?? 'avatar.png' }}" class="img-fluid product-image border-radius-span">
+                                                                </div>
+                                                            </td>
+                                                            <td>{{ customer.first_name | ucfirst }}</td>
+                                                            <td>{{ customer.last_name | ucfirst }}</td>
+                                                            <td>{{ customer.email }}</td>
+                                                            <td>{{ customer.phone ?? '-' }}<br/>
+                                                                <span class="badge badge-{{ customer.status.class }}">{{ customer.status.status | ucfirst }}</span>
+                                                            </td>
+                                                            <td>{{ customer.address_1 ?? '-' }}<br/>
+                                                                {% if customer.address_1 is not empty %}
+                                                                    <span class="badge badge-info">Main Address</span>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>{{ customer.address_2 ?? '-' }}</td>
+                                                            <td>
+                                                                {% if customer.status.status is not same as('active')  %}
+                                                                    <form action="{{ url_for('user.activate', { "customer": customer.id }) }}" class="btn lone-form" method="POST">
+                                                                        <button class="btn-success btn-sm" type="submit"><i class="fa fa-check"></i> Activate</button>
+                                                                        <input type="hidden" name="_METHOD" value="PUT">
+                                                                        {{ csrf | raw }}
+                                                                    </form>
+                                                                {% endif %}
+
+                                                                {% if customer.status.status is not same as('inactive') %}
+                                                                    <form action="{{ url_for('user.deactivate', { "customer": customer.id }) }}" class="btn lone-form" method="POST">
+                                                                        <button class="btn-warning btn-sm" type="submit"><i class="fa fa-exclamation"></i> Deactivate</button>
+                                                                        <input type="hidden" name="_METHOD" value="PUT">
+                                                                        {{ csrf | raw }}
+                                                                    </form>
+                                                                {% endif %}
+
+                                                                {% if customer.status.status is not same as('blocked') %}
+                                                                    <form action="{{ url_for('user.block', { "customer": customer.id }) }}" class="btn lone-form" method="POST">
+                                                                        <button class="btn-danger btn-sm" type="submit"><i class="fa fa-times"></i> Block</button>
+                                                                        <input type="hidden" name="_METHOD" value="PUT">
+                                                                        {{ csrf | raw }}
+                                                                    </form>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+   </div>
+{% endblock %}

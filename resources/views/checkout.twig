@@ -1,0 +1,217 @@
+{% extends "layouts/app.twig" %} {% block title %}Checkout{% endblock %} {%
+block content %} {% include "includes/navbar.twig" %}
+<div class="main-content">
+	<div class="checkout-sect mt-3 mb-5">
+		<div class="container">
+			<h1 class="mb-4">Your Checkout</h1>
+			<div class="row"></div>
+			<div class="row">
+				<div class="col-md-4 order-md-2 mb-4">
+					<h4
+						class="d-flex justify-content-between align-items-center mb-3"
+					>
+						<span class="text-muted">Your Cart</span>
+						<span
+							class="badge badge-secondary badge-pill"
+							id="checkout-total"
+							>3</span
+						>
+					</h4>
+					<!-- Everything going on in the page -->
+					<div id="checkout-container"></div>
+					<!-- End of Everything going on in the page -->
+				</div>
+				<div class="col-md-8 order-md-1 billing-sect">
+				    <div class="card card-body bg-white">
+    					<h6 class="success">
+    						Please Note: Delivery fee may apply depending on your location
+    					</h6>
+    					<h4 class="mb-3">Billing address</h4>
+    
+    					{% if flash.hasMessage('empty-cart') %}
+    					<h4 class="error text-center text-uppercase">
+    						{{ flash.getMessage("empty-cart") | first }}
+    					</h4>
+    					{% endif %} {% if flash.hasMessage('empty-menu') %}
+    					<h4 class="error text-center text-uppercase">
+    						{{ flash.getMessage("empty-menu") | first }}
+    					</h4>
+    					{% endif %} {% if flash.hasMessage('curl-error') %}
+    					<h4 class="error text-center text-uppercase">
+    						{{ flash.getMessage("curl-error") | first }}
+    					</h4>
+    					{% endif %} {% if flash.hasMessage('verify-failed') %}
+    					<h4 class="error text-center text-uppercase">
+    						{{ flash.getMessage("verify-failed") | first }}
+    					</h4>
+    					{% endif %}
+    
+    					<form
+    						action="{{ url_for('checkout') }}"
+    						method="POST"
+    						class=".submit-form"
+    						id="checkout-form"
+    					>
+    						<div class="row">
+    							<div class="col-md-6 mb-3">
+    								<label for="first_name">First Name</label>
+    								<input
+    									type="text"
+    									class="form-control"
+    									name="first_name"
+    									id="first_name"
+    									value="{{ old.first_name ?? user.first_name }}"
+    									required
+    								/>
+    								{% if errors.first_name %}
+    								<small class="error">{{
+    									errors.first_name | first
+    								}}</small>
+    								{% endif %}
+    							</div>
+    							<div class="col-md-6 mb-3">
+    								<label for="last_name">Last name</label>
+    								<input
+    									type="text"
+    									name="last_name"
+    									class="form-control"
+    									id="last_name"
+    									value="{{ old.last_name ?? user.last_name }}"
+    									required
+    								/>
+    								{% if errors.last_name %}
+    								<small class="error">{{
+    									errors.last_name | first
+    								}}</small>
+    								{% endif %}
+    							</div>
+    						</div>
+    
+    						<div class="mb-3">
+    							<label for="email">Email</label>
+    							<input
+    								type="email"
+    								class="form-control"
+    								value="{{ old.email ?? user.email }}"
+    								id="email"
+    								name="email"
+    								required
+    							/>
+    							{% if errors.email %}
+    							<small class="error">{{ errors.email | first }}</small>
+    							{% endif %}
+    						</div>
+    						<div class="mb-3">
+    							<label for="phone">Phone</label>
+    							<input
+    								type="text"
+    								class="form-control"
+    								value="{{ old.phone ?? user.phone }}"
+    								id="phone"
+    								name="phone"
+    								required
+    							/>
+    							{% if errors.phone %}
+    							<small class="error">{{ errors.phone | first }}</small>
+    							{% endif %}
+    						</div>
+    
+    						<div class="mb-3">
+    							<label for="delivery_location"
+    								>Choose Delivery Location</label
+    							>
+    							<br/>
+    							{% if errors.delivery_location %}
+    							<small class="error">{{
+    								errors.delivery_location | first
+    							}}</small>
+    							{% endif %}
+    							
+    							{% if locations is empty %}
+    							    <p class="text-center text-uppercase">We currently have no delivery locations. Please check later</p>
+    							{% else %}
+    							    {% for location in locations %}
+    							        <div class="form-check">
+            								<input class="form-check-input" type="radio"
+            								name="delivery_location" id="location{{ location.id }}"
+            								value="{{ location.location }}"
+            								{{ old.delivery_location is same as(location.location) ? ' checked' : '' }}
+            								/>
+            								<label class="form-check-label" for="location{{ location.id }}">
+            									{{ location.location | ucwords }} <span class="text-muted">(Fee &#8358;{{ number_format(location.amount, 2) }})</span>
+            									<p>
+            									    <small>{{ location.lga | ucwords }}</small>
+            									</p>
+            								</label>
+            							</div>
+    							    {% endfor %}
+    							{% endif %}
+    							
+    						<div class="mb-3">
+    							<label for="address">Address 1</label>
+    							<input
+    								type="text"
+    								class="form-control"
+    								value="{{ old.address_1 ?? user.address_1 }}"
+    								id="address"
+    								name="address_1"
+    								required
+    							/>
+    							{% if errors.address_1 %}
+    							<small class="error">{{ errors.address_1 | first }}</small>
+    							{% endif %}
+    						</div>
+    						<div class="mb-3">
+    							<label for="address2"
+    								>Address 2<span class="text-muted">
+    									(Optional)</span
+    								></label
+    							>
+    							<input
+    								type="text"
+    								class="form-control"
+    								name="address_2"
+    								value="{{ old.address_2 ?? user.address_2 }}"
+    								id="address2"
+    							/>
+    							{% if errors.address_2 %}
+    							<small class="error">{{ errors.address_2 | first }}</small>
+    							{% endif %}
+    						</div>
+    						<hr class="mb-4" />
+    
+    						<h4 class="mb-3">Payment Method</h4>
+    
+    						<div class="d-block my-3">
+    							<div class="custom-control custom-radio">
+    								<input id="card" name="payment_method" value="card"
+    								type="radio" class="custom-control-input" required
+    								{#{{ old.payment_method is same as('card') ? ' checked' : '' }}#}
+    								checked>
+    								<label class="custom-control-label" for="card">Debit Card</label>
+    							</div>
+    							{% if errors.payment_method %}
+    							<small class="error">{{
+    								errors.payment_method | first
+    							}}</small>
+    							{% endif %}
+    						</div>
+    						<!-- Error message container -->
+    						<div id="checkout-error-message"></div>
+    						<!-- End of Error message container -->
+    						<hr class="mb-4" />
+    						{{ csrf | raw }}
+    						<button
+    							class="btn btn-main btn-lg btn-block submit-btn"
+    							type="submit"
+    						>
+    							Continue to checkout
+    						</button>
+    					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
